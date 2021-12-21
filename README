@@ -1,0 +1,18 @@
+## Run
+
+#Compile all
+./mill -j 8 -w all _.compile common.fastOpt js.fastOpt
+
+#Test
+./mill -j 8 common.test
+
+#Run server
+./mill -j 8 -w server.runBackground
+
+## Configure intellij
+
+./mill mill.scalalib.GenIdea/idea
+
+
+///
+document.documentElement.requestFullscreen()
