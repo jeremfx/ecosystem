@@ -1,8 +1,9 @@
 package core.domain.game
 
-import core.domain.event.{GameEventDispatcher, GameEventHandler}
+import core.domain.commands.CommandHandler
+import core.domain.events.EventHandlerRegister
 
-trait Game extends GameEventDispatcher with GameEventHandler {
+trait Game extends EventHandlerRegister with CommandHandler {
   def update(): Unit
 
   def isTerminated: Boolean

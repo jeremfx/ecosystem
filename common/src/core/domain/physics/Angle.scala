@@ -15,7 +15,7 @@ case class Angle(radians: Double) {
 
   def * (value: Double) = Angle(radians*value)
 
-  def degrees: Double = radians * 180/Math.PI
+  def degrees: Double = Math.toDegrees(radians)
 
   // On inverse y car dans le canvas l'axe y est inversé
   def toVec: Vec = Vec(Math.cos(radians), -Math.sin(radians))

@@ -1,32 +1,29 @@
 package runner
 
-import core.domain.event.{EntityRemoved, GameEvent, GameEventHandler}
-import core.domain.game.{Bounds, Entity, Game}
+import controllers.EcosystemController
+import core.domain.game.Game
 import drawers.CanvasGameDrawer
 import events.DomEventDispatcher
 import org.scalajs.dom
-import org.scalajs.dom.{document, html}
+import org.scalajs.dom.html
 
 import scala.scalajs.js.{Date, timers}
 
-class BasicGameRunner(canvas: html.Canvas, game: Game, gameDrawer: CanvasGameDrawer) extends GameRunner with GameEventHandler {
+class BasicRunner(canvas: html.Canvas, game: Game, gameDrawer: CanvasGameDrawer) extends GameRunner {
 
-  val ctx: dom.CanvasRenderingContext2D = initCanvasCtx(game.bounds)
+  val ctx: dom.CanvasRenderingContext2D = initCanvasCtx()
   private val perfStats = new PerfStats()
   private val updateTimeStep = 32
   private var lastUpdateTs: Double = getCurrentTimeInMs
   initEventHandling()
-  private var isAnimationFrameRequested: Boolean  = false
-
-
-
-
+  private var isAnimationFrameRequested: Boolean = false
+  DomEventDispatcher.register(new EcosystemController(game, canvas))
 
   def initEventHandling(): Unit = {
     canvas.onmousedown = e => {
       DomEventDispatcher.onMouseDown(e)
     }
-    canvas.onmouseup= e => {
+    canvas.onmouseup = e => {
       DomEventDispatcher.onMouseUp(e)
     }
     canvas.onclick = e => {
@@ -46,13 +43,14 @@ class BasicGameRunner(canvas: html.Canvas, game: Game, gameDrawer: CanvasGameDra
   def run(): Unit = {
     println("RUN")
     val drawInterval = timers.setInterval(4) {
-      if(!isAnimationFrameRequested) {
+      if (!isAnimationFrameRequested) {
         dom.window.requestAnimationFrame((ts: Double) => draw())
         isAnimationFrameRequested = true
       }
       update()
     }
   }
+
   // Limitation du navigateur 60 fps. dom.window.requestAnimationFrame nous call maximum 60 fois par seconde
   private def draw(): Unit = {
     val current = getCurrentTimeInMs
@@ -63,6 +61,8 @@ class BasicGameRunner(canvas: html.Canvas, game: Game, gameDrawer: CanvasGameDra
       perfStats.drawStats(getCurrentTimeInMs, ctx)
     }
   }
+
+  private def getCurrentTimeInMs: Double = new Date().getTime()
 
   def update(): Unit = {
     if (!game.isTerminated) {
@@ -79,23 +79,21 @@ class BasicGameRunner(canvas: html.Canvas, game: Game, gameDrawer: CanvasGameDra
     }
   }
 
-  private def getCurrentTimeInMs: Double = new Date().getTime()
-
-  def initCanvasCtx(boundaries: Bounds): dom.CanvasRenderingContext2D = {
+  def initCanvasCtx(): dom.CanvasRenderingContext2D = {
     val ctx = canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
     canvas.width = game.bounds.width
     canvas.height = game.bounds.height
     ctx
   }
 
-  override def handle(event: GameEvent): Unit = {
-/*    event match {
-        case e: EntityRemoved => e.entity match {
-        case s: BasicShip => DomEventDispatcher.unregister(spaceShipController)
+  /*  override def handle(event: Event): Unit = {
+  /*    event match {
+          case e: EntityRemoved => e.entity match {
+          case s: BasicShip => DomEventDispatcher.unregister(spaceShipController)
+          case _ =>
+        }
         case _ =>
-      }
-      case _ =>
+      }*/
     }*/
-  }
 
 }

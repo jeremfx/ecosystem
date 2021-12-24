@@ -43,7 +43,7 @@ final class SimpleMovable(var pos: Vec, var vel: Vec, var mass: Double = 1, var 
     Vec(Random.nextDouble() * 0.4 - 0.2, Random.nextFloat() * 0.4 - 0.2)
   }
 
-  private def sumForces: Force = forces.filter(f => !f.name.contains("push")).fold(Force("Accumulated forces", Vec(0, 0)))(
+  private def sumForces: Force = forces.filter(f => f.name.contains("steer")).fold(Force("Accumulated forces", Vec(0, 0)))(
       (f1: Force, f2: Force) => Force(f1.name, f1.vector + f2.vector))
 
   private def sumExternalForces: Force = forces.filter(f => f.name.contains("push")).fold(Force("Accumulated forces", Vec(0, 0)))(

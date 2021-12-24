@@ -14,5 +14,10 @@
 ./mill mill.scalalib.GenIdea/idea
 
 
-///
-document.documentElement.requestFullscreen()
+## Ajouter une espèce à la simulation
+Common :
+Create new class in core.domain.species, add wanted traits
+Implements methods from traits
+Js :
+Create a new drawer in drawers.species
+Add mapping to your drawer in GenericEntityDrawer

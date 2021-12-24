@@ -16,7 +16,7 @@ object BasicVegetarianTest extends TestSuite {
         assert(vegetarian.hunger == 2)
       }
       test - {
-        val basicPlant = new BasicPlant(2, Vec(5,0))
+        val basicPlant = new BasicPlant(2, Vec(5,0), 400)
         entityRepo.add(basicPlant)
         (0 to vegetarian.MAX_HUNGER).foreach(_ -> vegetarian.update())
         assert(vegetarian.hunger == 151)

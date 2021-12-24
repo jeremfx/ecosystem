@@ -4,6 +4,6 @@ import scala.collection.mutable
 
 trait EntityRepository {
   def add(entity: Entity): Unit
-  def entities(): mutable.Seq[Entity]
-  def remove(id: Int): Unit
+  def entities(): Seq[Entity]
+  def remove(entity: Entity): Unit
 }

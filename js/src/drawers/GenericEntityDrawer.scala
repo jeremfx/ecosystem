@@ -2,8 +2,8 @@ package drawers
 
 import core.domain.game.Entity
 import core.domain.physics.{Positionable, TwoDimensional}
-import core.domain.species.{BasicPlant, BasicVegetarian}
-import drawers.species.{BasicPlantDrawer, BasicVegetarianDrawer}
+import core.domain.species.{BasicPlant, BasicVegetarian, Carrion, Insect}
+import drawers.species.{BasicPlantDrawer, BasicVegetarianDrawer, CarrionDrawer, InsectDrawer}
 import org.scalajs.dom
 
 object GenericEntityDrawer extends EntityDrawer[Entity] {
@@ -15,6 +15,8 @@ object GenericEntityDrawer extends EntityDrawer[Entity] {
     entity match {
       case e: BasicPlant => BasicPlantDrawer.draw(ctx, e, remainingLag)
       case e: BasicVegetarian => BasicVegetarianDrawer.draw(ctx, e, remainingLag)
+      case e: Carrion => CarrionDrawer.draw(ctx, e, remainingLag)
+      case e: Insect => InsectDrawer.draw(ctx, e, remainingLag)
       case e: Positionable => {
         ctx.beginPath
         ctx.arc(e.pos.x, e.pos.y, 20, 0, 2 * Math.PI)

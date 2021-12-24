@@ -12,6 +12,15 @@ object SimpleMovableTest extends TestSuite {
         assert(movable.vel == Vec(2, 2))
         assert(movable.pos == Vec(7, 7))
       }
+/*      test - {
+        var steer = Vec(4, 2)
+        val a = (movable.vel + steer)
+        val b= a.length
+
+        if(b > movable.maxVel) {
+          steer = steer.normalize * (movable.vel.length - steer.length)
+        }
+      }*/
     }
   }
 }

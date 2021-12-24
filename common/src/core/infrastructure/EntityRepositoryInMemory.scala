@@ -8,7 +8,7 @@ class EntityRepositoryInMemory extends EntityRepository{
   private val mutableEntities = new mutable.ListBuffer[Entity]()
   override def add(entity: Entity): Unit = mutableEntities += entity
 
-  override def entities(): mutable.Seq[Entity] = mutableEntities
+  override def entities(): Seq[Entity] = mutableEntities.toSeq
 
-  override def remove(id: Int): Unit = mutableEntities.filterInPlace(e => e.id != id)
+  override def remove(entity: Entity): Unit = mutableEntities -= entity
 }

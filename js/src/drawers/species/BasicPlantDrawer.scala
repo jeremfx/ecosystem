@@ -7,9 +7,8 @@ import org.scalajs.dom.CanvasRenderingContext2D
 object BasicPlantDrawer extends EntityDrawer[BasicPlant] {
   override def draw(ctx: CanvasRenderingContext2D, entity: BasicPlant, remainingLag: Double): Unit = {
     ctx.beginPath
-    val width = entity.width
-    val height = entity.height
-    ctx.arc(entity.pos.x - width/2 , entity.pos.y - height/2, width, 0, 2*Math.PI)
+    val width = Math.round(entity.width)
+    ctx.arc(entity.pos.x, entity.pos.y, width/2, 0, 2*Math.PI)
     if(entity.isMaxSize){
       ctx.fillStyle = "#41A534"
     } else
