@@ -5,8 +5,8 @@ import org.scalajs.dom
 import scala.collection.mutable
 
 class PerfStats() {
-  private var tsOfDraws = new mutable.ListBuffer[Double]()
-  private var tsOfUpdates = new mutable.ListBuffer[Double]()
+  private val tsOfDraws = new mutable.ListBuffer[Double]()
+  private val tsOfUpdates = new mutable.ListBuffer[Double]()
   private var numberOfEntities = 0
 
   def logDraw(timestamp: Double): Unit = tsOfDraws += timestamp
@@ -20,6 +20,10 @@ class PerfStats() {
     ctx.fillText("FPS : " + String.valueOf(getFps(timestamp)), 10, 10)
     ctx.fillText("UPS : " + String.valueOf(getUps(timestamp)), 115, 10)
     ctx.fillText("Entities : " + String.valueOf(numberOfEntities), 220, 10);
+    if(tsOfDraws.length > 1000){
+      tsOfDraws.dropInPlace(500)
+      tsOfUpdates.dropInPlace(500)
+    }
   }
 
   private def getFps(timestamp: Double) = {
