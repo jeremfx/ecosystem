@@ -37,8 +37,9 @@ class Ecosystem extends Game {
     if (ticks % 2 == 0) {
     }
     entityRepo.entities().foreach(_.update())
-    entityRepo.entities().collect({ case i: TwoDimensional with Positionable => i }).foreach(i => {
-      entityRepo.entities().collect({ case i: TwoDimensional with Positionable => i }).foreach(j => {
+    val entitiesWithCollider = entityRepo.entities().collect({ case i: TwoDimensional with Positionable with Collider => i })
+    entitiesWithCollider.foreach(i => {
+      entitiesWithCollider.foreach(j => {
         if (i != j && CollisionDetection.isColliding(i, j))
           i match {
             case e: Collider => e.handleCollision(j)

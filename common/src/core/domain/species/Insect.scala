@@ -6,7 +6,7 @@ import core.domain.physics.{Angle, Collider, Force, Movable, Positionable, Simpl
 import scala.util.Random
 
 class Insect(id: Int, entityRepo: EntityRepository, startingPos: Vec) extends Entity with TwoDimensional
-  with Positionable with Movable with Collider {
+  with Positionable with Movable {
 
   private val movable = new SimpleMovable(
     startingPos,
@@ -108,8 +108,5 @@ class Insect(id: Int, entityRepo: EntityRepository, startingPos: Vec) extends En
 
   override def maxVel: Double = movable.maxVel
 
-  override def handleCollision(entity: Entity): Unit = {
-
-  }
 }
 

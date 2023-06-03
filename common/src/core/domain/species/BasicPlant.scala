@@ -6,7 +6,8 @@ import core.domain.physics.{Angle, Collider, Force, Movable, Positionable, Simpl
 
 import scala.util.Random
 
-class BasicPlant(id: Int, startingPos: Vec, startingSize: Int) extends Entity with TwoDimensional with Positionable with Edible with Collider with Movable {
+class BasicPlant(id: Int, startingPos: Vec, startingSize: Int) extends Entity with TwoDimensional with Positionable
+  with Edible with Collider with Movable {
 
 
   private val GROWTH_RATE: Double = 2.6
