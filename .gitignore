@@ -2,3 +2,5 @@ out/
 .idea_modules/
 .idea/
 .coursier/
+stderr.log
+stdout.log

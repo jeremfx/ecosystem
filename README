@@ -1,23 +1,18 @@
-## Run
+#Compile and transpile client (-w is waiting for changes)
+./mill -w client.fastLinkJS
 
-#Compile all
-./mill -j 8 -w all _.compile common.fastOpt js.fastOpt
+#Compile and run server
+./mill -w server.runBackground (see http://localhost:8001/)
 
-#Test
-./mill -j 8 common.test
-
-#Run server
-./mill -j 8 -w server.runBackground
-
-## Configure intellij
-
+## Configure intellij support
 ./mill mill.scalalib.GenIdea/idea
 
+## Adding a specie to the sim
+Server :
+- Create new class in core.domain.species,
+- Add wanted traits
+- Implement said traits
 
-## Ajouter une espèce à la simulation
-Common :
-Create new class in core.domain.species, add wanted traits
-Implements methods from traits
 Js :
 Create a new drawer in drawers.species
 Add mapping to your drawer in GenericEntityDrawer

@@ -1,49 +1,37 @@
-import mill._
-import mill.scalajslib._
-import mill.scalalib._
+import mill._, scalalib._, scalajslib._
 
-object js extends ScalaJSModule {
-  def scalaVersion = "2.13.2"
+trait AppScalaModule extends ScalaModule {
+  def scalaVersion = "3.3.0"
+}
 
-  def scalaJSVersion = "1.5.1"
+trait AppScalaJSModule extends AppScalaModule with ScalaJSModule {
+  def scalaJSVersion = "1.13.1"
+}
 
-  override def moduleDeps = Seq(common)
+object server extends AppScalaModule {
+  override def moduleDeps = Seq(shared.jvm)
 
   override def ivyDeps = Agg(
-    ivy"org.scala-js::scalajs-dom::1.1.0",
-    ivy"com.lihaoyi::scalatags::0.9.2",
-    ivy"com.lihaoyi::upickle::1.2.2"
+    ivy"com.lihaoyi::cask::0.9.1",
+    ivy"com.lihaoyi::scalatags::0.12.0"
   )
 }
 
-object common extends ScalaJSModule {
-  def scalaVersion = "2.13.2"
-  def scalaJSVersion = "1.5.1"
-  override def ivyDeps = Agg(
-    ivy"com.lihaoyi::utest::0.7.9"
-  )
-
-  object test extends Tests{
-    override def ivyDeps = Agg(
-      ivy"com.lihaoyi::utest::0.7.9"
-    )
-    override def testFrameworks = Seq("utest.runner.Framework")
+object shared extends Module {
+  trait SharedModule extends AppScalaModule with PlatformScalaModule {
   }
 
+  object jvm extends SharedModule
+
+  object js extends SharedModule with AppScalaJSModule
 }
 
-object jvm extends ScalaModule {
-  def scalaVersion = "2.13.2"
-
-  override def moduleDeps = Seq(common)
-}
-
-object server extends ScalaModule {
-  def scalaVersion = "2.13.2"
+object client extends AppScalaJSModule {
+  override def moduleDeps = Seq(shared.js)
 
   override def ivyDeps = Agg(
-    ivy"com.lihaoyi::cask::0.7.7",
-    ivy"com.lihaoyi::scalatags::0.9.4"
+    ivy"org.scala-js::scalajs-dom::2.6.0",
+    ivy"com.lihaoyi::scalatags::0.12.0",
+    ivy"com.lihaoyi::upickle::3.1.0"
   )
-
 }
