@@ -28,7 +28,7 @@ object Server extends cask.MainRoutes {
         ),
         body(
           canvas(id := "gameCanvas", width := 1280, height := 720, tabindex := 1, style := "margin-left:auto; margin-right:auto; display: block;"),
-          script(src := "js/out.js"),
+          script(src := "js/main.js"),
           script("App.start()")
         )
       )
@@ -42,7 +42,7 @@ object Server extends cask.MainRoutes {
 
 
   @cask.staticFiles("/js/")
-  def staticFileRoutes() = "out/js/fastOpt/dest"
+  def staticFileRoutes() = "out/client/fastLinkJs.dest/"
 
   initialize()
 }

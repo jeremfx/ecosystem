@@ -7,8 +7,8 @@ import core.domain.physics.{Angle, Collider, Force, Movable, Positionable, Simpl
 import scala.collection.mutable
 import scala.util.Random
 
-class BasicVegetarian(id: Int, entityRepo: EntityRepository, startingPos: Vec) extends Entity(id) with TwoDimensional
-  with Positionable with Movable with Collider{
+class BasicVegetarian(id: Int, entityRepo: EntityRepository, startingPos: Vec) extends Entity(id), TwoDimensional, 
+  Positionable, Movable, Collider{
 
   private val BRAKING = -0.15
   val MAX_STEER = 1000
@@ -19,13 +19,14 @@ class BasicVegetarian(id: Int, entityRepo: EntityRepository, startingPos: Vec) e
     1,
     1.5
   )
+  export movable.{pos, vel, heading, mass, addForce, move, maxVel}
 
   val REPRODUCTION_RATE = 1
   val REPRODUCTION_THRESHOLD = 1000
   var reproductionLevel = 0
   var hasReproduct = false
   private def isReproductionReady = reproductionLevel > REPRODUCTION_THRESHOLD
-  private def updateReproduction = {
+  private def updateReproduction(): Unit = {
     if (isReproductionReady) {
       entityRepo.add(new BasicVegetarian(1, entityRepo, Vec(pos.x + width + 1, pos.y + 1)))
       reproductionLevel = 0
@@ -37,7 +38,7 @@ class BasicVegetarian(id: Int, entityRepo: EntityRepository, startingPos: Vec) e
     }
   }
 
-  var hunger = Random.nextInt(801)
+  var hunger: Int = Random.nextInt(801)
   val MAX_HUNGER = 600
   val DEATH_HUNGER = 1000
 
@@ -65,7 +66,7 @@ class BasicVegetarian(id: Int, entityRepo: EntityRepository, startingPos: Vec) e
       movable.maxVel = 1
       wander()
     }
-    updateReproduction
+    updateReproduction()
     movable.move()
 
     def wander(): Unit = {
@@ -96,13 +97,12 @@ class BasicVegetarian(id: Int, entityRepo: EntityRepository, startingPos: Vec) e
 
   override def handleCollision(entity: Entity): Unit = {
     entity match {
-      case e: BasicVegetarian => {
-        if(Random.nextInt(100) == 1){
+      case e: BasicVegetarian =>
+        if (Random.nextInt(100) == 1) {
           entityRepo.add(new BasicVegetarian(1, entityRepo, Vec(pos.x + width + 1, pos.y + 1)))
         }
-        val vectorPush = ((e.pos - pos).normalize) * 2
+        val vectorPush = (e.pos - pos).normalize * 2
         e.addForce(Force("push", vectorPush))
-      }
       case _ =>
     }
   }
@@ -110,20 +110,6 @@ class BasicVegetarian(id: Int, entityRepo: EntityRepository, startingPos: Vec) e
   override def width: Double = 20
 
   override def height: Double = 20
-
-  override def pos: Vec = movable.pos
-
-  override def vel: Vec = movable.vel
-
-  override def heading: Angle = movable.heading
-
-  override def mass: Double = movable.mass
-
-  override def addForce(f: Force): Unit = movable.addForce(f)
-
-  override def move(): Unit = movable.move()
-
-  override def maxVel: Double = movable.maxVel
 
   def isHungry: Boolean = hunger > MAX_HUNGER
 
