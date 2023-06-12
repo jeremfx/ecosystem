@@ -11,9 +11,7 @@
 ### Server :
 - Create new class in core.domain.species,
 - Add wanted traits
-- Implement said traits
-- Add new drawer in client.drawers.species
-- Wire drawer in GenericEntityDrawer
+- Implement said traits (and any behavior in update method)
 
 ### Js :
 - Create a new drawer in drawers.species
