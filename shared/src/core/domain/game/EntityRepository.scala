@@ -1,7 +1,7 @@
 package core.domain.game
 
 import core.domain.physics.TwoDimensional
-import core.domain.species.{BasicPlant, Carrion, Grass}
+import core.domain.species.{BasicPlant, Carrion, Grass, Herbivore}
 
 
 trait EntityRepository {
@@ -13,5 +13,6 @@ trait EntityRepository {
   def grass(): Seq[Grass]
   def plants(): Seq[BasicPlant]
   def twoDimensionals(): Seq[TwoDimensional]
-  
+  def herbivores(): Seq[Herbivore]
+
 }

@@ -12,12 +12,8 @@ object InsectDrawer extends EntityDrawer[Insect] {
         ctx.fill()
         ctx.beginPath
         ctx.arc(entity.pos.x, entity.pos.y, entity.width/2, 0, 2*Math.PI)*/
-    if (entity.isHungry) {
-      ctx.fillStyle = "#F65533"
 
-    } else {
       ctx.fillStyle = "#FFD662"
-    }
     ctx.fill()
   }
 }

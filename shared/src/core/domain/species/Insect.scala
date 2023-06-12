@@ -41,7 +41,6 @@ class Insect(id: Int, entityRepo: EntityRepository, startingPos: Vec) extends En
   private def updateReproduction(): Unit = {
     if(isEggReady){
       layEgg()
-      print("layEgg")
       eggBuildingLevel = 0
     } else {
       eggBuildingLevel += EGG_BUILDING_RATE

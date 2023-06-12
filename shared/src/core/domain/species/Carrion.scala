@@ -34,7 +34,7 @@ class Carrion(id: Int, entityRepo: EntityRepository, startingPos: Vec, dimension
 
   override def handleCollision(entity: Entity): Unit = {
     entity match {
-      case e: BasicVegetarian => {
+      case e: Herbivore => {
         val vectorPush = (e.pos - pos).normalize * 2
         e.addForce(Force("push", vectorPush))
       }

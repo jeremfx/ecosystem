@@ -20,12 +20,17 @@ class Ecosystem extends Game {
   //createRandomGrass(perlinNoiseByPixel).foreach(entityRepo.add(_))
   createRandomPlants(perlinNoiseByPixel).foreach(entityRepo.add(_))
   //createRandomPlants(5).foreach(entityRepo.add(_))
-  createRandomVegetarian(10).foreach(entityRepo.add(_))
+  createRandomHerbivores(10).foreach(entityRepo.add(_))
+  createRandomCarnivores(2).foreach(entityRepo.add(_))
   createRandomInsects(15).foreach(entityRepo.add(_))
   //createRandomCarrion(5).foreach(entityRepo.add(_))
 
-  def createRandomVegetarian(numberOfVegetarian: Int): Seq[BasicVegetarian] = {
-    Range(0, numberOfVegetarian).map(i => new BasicVegetarian(i, entityRepo, Vec(Random.nextInt(bounds.width), Random.nextInt(bounds.height))))
+  def createRandomHerbivores(numberOfVegetarian: Int): Seq[Herbivore] = {
+    Range(0, numberOfVegetarian).map(i => new Herbivore(i, entityRepo, Vec(Random.nextInt(bounds.width), Random.nextInt(bounds.height))))
+  }
+
+  def createRandomCarnivores(number: Int): Seq[Carnivore] = {
+    Range(0, number).map(i => new Carnivore(i, entityRepo, Vec(Random.nextInt(bounds.width), Random.nextInt(bounds.height))))
   }
 
   override def bounds: Bounds = Bounds(1280, 720)

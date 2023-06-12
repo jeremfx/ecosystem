@@ -10,7 +10,7 @@ class BasicPlant(id: Int, entityRepository: EntityRepository, startingPos: Vec, 
   with Circle(startingRadius) with Edible with Collider {
 
   private val RADIUS_GROWTH_RATE: Double = 0.1
-  private val REPLICATION_BUILD_TIME: Int = 3*30
+  private val REPLICATION_BUILD_TIME: Int = 2*30
   private var replication: Int = Random.nextInt(REPLICATION_BUILD_TIME)
 
   private def isReplicationReady(): Boolean = replication >= REPLICATION_BUILD_TIME
@@ -57,7 +57,7 @@ class BasicPlant(id: Int, entityRepository: EntityRepository, startingPos: Vec, 
 
   override def handleCollision(entity: Entity): Unit =
     entity match {
-      case e: BasicVegetarian => {
+      case e: (Herbivore | Carnivore) => {
         val vectorPush = (e.pos - pos).normalize * 2
         e.addForce(Force("push", vectorPush))
       }

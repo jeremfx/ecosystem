@@ -26,8 +26,8 @@ object Server extends cask.MainRoutes {
           meta(charset := "UTF-8"),
           title("Game starter")
         ),
-        body(
-          canvas(id := "gameCanvas", width := 1280, height := 720, tabindex := 1, style := "margin-left:auto; margin-right:auto; display: block;"),
+        body(style := " margin: 0; font-size: 0;")(
+          canvas(id := "gameCanvas", tabindex := 1, style := "margin-left:auto; margin-right:auto; display: block;"),
           script(src := "js/main.js"),
           script("App.start()")
         )

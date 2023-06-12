@@ -7,9 +7,8 @@ import core.domain.physics.{Angle, Area, Collider, Force, Movable, Positionable,
 import scala.collection.mutable
 import scala.util.Random
 
-class BasicVegetarian(id: Int, entityRepo: EntityRepository, startingPos: Vec) extends Entity(id), Square, Movable, Collider{
+class Herbivore(id: Int, entityRepo: EntityRepository, startingPos: Vec) extends Entity(id), Square, Movable, Collider{
 
-  private val BRAKING = -0.15
   val MAX_STEER = 1000
 
   private val movable = new SimpleMovable(
@@ -27,7 +26,7 @@ class BasicVegetarian(id: Int, entityRepo: EntityRepository, startingPos: Vec) e
   private def isReproductionReady = reproductionLevel > REPRODUCTION_THRESHOLD
   private def updateReproduction(): Unit = {
     if (isReproductionReady) {
-      entityRepo.add(new BasicVegetarian(1, entityRepo, Vec(pos.x + width + 1, pos.y + 1)))
+      entityRepo.add(new Herbivore(1, entityRepo, Vec(pos.x + width + 1, pos.y + 1)))
       reproductionLevel = 0
       hasReproduct = true
     } else {
@@ -49,6 +48,7 @@ class BasicVegetarian(id: Int, entityRepo: EntityRepository, startingPos: Vec) e
     candidates.headOption
   }
 
+  var food: Option[BasicPlant] = None
   override def update(): Unit = {
     hunger += 1
     if(hunger > DEATH_HUNGER){
@@ -83,10 +83,12 @@ class BasicVegetarian(id: Int, entityRepo: EntityRepository, startingPos: Vec) e
 
     def seekAndEatFood(desiredFood: BasicPlant): Unit = {
       val desiredVec = desiredFood.pos - pos
-      if (desiredVec.length < desiredFood.radius + 2) {
+      food = Some(desiredFood)
+      println(desiredVec.length + " , " + desiredFood.radius)
+      if (desiredVec.length < desiredFood.radius + width/2 + 2) {
         if (desiredFood.eat(CHUNK_SIZE)) {
-          println("eat")
           hunger = 0
+          food = None
         }
       } else {
         val steer: Vec = (desiredVec * movable.maxVel - vel).limit(MAX_STEER)
@@ -108,21 +110,19 @@ class BasicVegetarian(id: Int, entityRepo: EntityRepository, startingPos: Vec) e
 
   override def handleCollision(entity: Entity): Unit = {
     entity match {
-      case e: BasicVegetarian =>
-        //this produce a bug when they get stuck and keep hitting each other
-        if (Random.nextInt(100) == 1) {
-          entityRepo.add(new BasicVegetarian(1, entityRepo, Vec(pos.x + width + 1, pos.y + 1)))
-        }
+      case e: (Herbivore | Carnivore) =>
         val vectorPush = (e.pos - pos).normalize * 2
         e.addForce(Force("push", vectorPush))
       case _ =>
     }
   }
 
-  private def die(): Unit = {
+  def die(): Unit = {
     entityRepo.remove(this)
     entityRepo.add(new Carrion(1, entityRepo, pos, this))
   }
+
+
 
   override def width: Double = 20
 
@@ -130,6 +130,5 @@ class BasicVegetarian(id: Int, entityRepo: EntityRepository, startingPos: Vec) e
 
   def isHungry: Boolean = hunger > MAX_HUNGER
 
-  override def toString = s"BasicVegetarian($BRAKING, $MAX_STEER, $movable, $hunger, $MAX_HUNGER)"
 
 }
