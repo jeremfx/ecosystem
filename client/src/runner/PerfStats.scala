@@ -22,6 +22,8 @@ class PerfStats() {
     ctx.fillText("Entities : " + String.valueOf(numberOfEntities), 220, 10);
     if(tsOfDraws.length > 1000){
       tsOfDraws.dropInPlace(500)
+    }
+    if(tsOfUpdates.length > 1000){
       tsOfUpdates.dropInPlace(500)
     }
   }

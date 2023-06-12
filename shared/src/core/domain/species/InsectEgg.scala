@@ -24,4 +24,6 @@ class InsectEgg(id: Int, entityRepo: EntityRepository, startingPos: Vec) extends
   override def height: Double = 1
 
   override def pos: Vec = startingPos
+
+  override def contains(point: Vec): Boolean = point.equals(pos)
 }

@@ -2,8 +2,8 @@ package drawers
 
 import core.domain.game.Entity
 import core.domain.physics.{Positionable, TwoDimensional}
-import core.domain.species.{BasicPlant, BasicVegetarian, Carrion, Egg, Insect}
-import drawers.species.{BasicPlantDrawer, BasicVegetarianDrawer, CarrionDrawer, InsectDrawer, InsectEggDrawer}
+import core.domain.species.{BasicPlant, BasicVegetarian, Carrion, Egg, Grass, Insect}
+import drawers.species.{BasicPlantDrawer, BasicVegetarianDrawer, CarrionDrawer, GrassDrawer, InsectDrawer, InsectEggDrawer}
 import org.scalajs.dom
 
 object GenericEntityDrawer extends EntityDrawer[Entity] {
@@ -13,6 +13,7 @@ object GenericEntityDrawer extends EntityDrawer[Entity] {
   //FIXME Faire une map (Entity, EntityDrawer) pour eviter le case à rallonge
   override def draw(ctx: dom.CanvasRenderingContext2D, entity: Entity, remainingLag: Double): Unit = {
     entity match {
+      //case e: Grass => GrassDrawer.draw(ctx, e, remainingLag)
       case e: BasicPlant => BasicPlantDrawer.draw(ctx, e, remainingLag)
       case e: BasicVegetarian => BasicVegetarianDrawer.draw(ctx, e, remainingLag)
       case e: Carrion => CarrionDrawer.draw(ctx, e, remainingLag)

@@ -41,7 +41,7 @@ class BasicRunner(canvas: html.Canvas, game: Game, gameDrawer: CanvasGameDrawer)
   }
 
   def run(): Unit = {
-    println("RUN TEST")
+    println("RUN TEST 3")
     val drawInterval = timers.setInterval(4) {
       if (!isAnimationFrameRequested) {
         dom.window.requestAnimationFrame((ts: Double) => draw())

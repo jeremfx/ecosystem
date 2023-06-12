@@ -1,7 +1,7 @@
 package core.domain.species
 
 import core.domain.game.{Entity, EntityRepository}
-import core.domain.physics.{Angle, Collider, Force, Movable, Positionable, SimpleMovable, TwoDimensional, Vec}
+import core.domain.physics.{Angle, Area, Collider, Force, Movable, Positionable, SimpleMovable, TwoDimensional, Vec}
 
 import scala.util.Random
 
@@ -44,7 +44,7 @@ class Insect(id: Int, entityRepo: EntityRepository, startingPos: Vec) extends En
       print("layEgg")
       eggBuildingLevel = 0
     } else {
-        eggBuildingLevel += EGG_BUILDING_RATE
+      eggBuildingLevel += EGG_BUILDING_RATE
     }
   }
 
@@ -79,8 +79,8 @@ class Insect(id: Int, entityRepo: EntityRepository, startingPos: Vec) extends En
   def seekAndEatFood(desiredFood: Carrion): Unit = {
     val desiredVec = desiredFood.pos - pos
     if (desiredVec.length < desiredFood.width / 2 + width / 2 + 2) {
-      if (desiredFood.eat(1)) {
-        hunger -= 1
+      if (desiredFood.eat(Area(1.0))) {
+        hunger -= 5
       }
     } else {
       val steer: Vec = (desiredVec * movable.maxVel - vel).limit(MAX_STEER)

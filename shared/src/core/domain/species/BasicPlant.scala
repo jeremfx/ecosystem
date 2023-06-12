@@ -1,59 +1,59 @@
 package core.domain.species
 
 
-import core.domain.game.Entity
-import core.domain.physics.{Angle, Collider, Force, Movable, Positionable, SimpleMovable, TwoDimensional, Vec}
+import core.domain.game.{Entity, EntityRepository}
+import core.domain.physics.*
 
 import scala.util.Random
 
-class BasicPlant(id: Int, startingPos: Vec, startingSize: Int) extends Entity(id) with TwoDimensional with Positionable
-  with Edible with Collider with Movable {
+class BasicPlant(id: Int, entityRepository: EntityRepository, startingPos: Vec, startingRadius: Int) extends Entity(id)
+  with Circle(startingRadius) with Edible with Collider {
 
+  private val RADIUS_GROWTH_RATE: Double = 0.1
+  private val REPLICATION_BUILD_TIME: Int = 3*30
+  private var replication: Int = Random.nextInt(REPLICATION_BUILD_TIME)
 
-  private val GROWTH_RATE: Double = 2.6
-  var size: Double = startingSize
-  val MAX_SIZE: Double = 2000
-  val MIN_SIZE: Double = 800
-
-  private val movable = new SimpleMovable(
-    startingPos,
-    Vec(0, 0),
-    1,
-    3
-  )
-
-
-  def contains(pos: Vec): Boolean = {
-    (pos - this.pos).length < width
-  }
-
+  private def isReplicationReady(): Boolean = replication >= REPLICATION_BUILD_TIME
   override def update(): Unit = {
-    if (size <= MAX_SIZE) {
-      size += GROWTH_RATE
-      if(size > MAX_SIZE) size = MAX_SIZE
-    }
-    movable.move()
+    grow()
+    replicate()
   }
 
-  override def width: Double = Math.sqrt(size)
+  private def grow(): Unit = {
+    if (radius < BasicPlant.MAX_RADIUS) {
+      radius += RADIUS_GROWTH_RATE
+      if(entityRepository.twoDimensionals().exists(twoD => !twoD.equals(this) && twoD.intersects(this))){
+        radius -= RADIUS_GROWTH_RATE
+      }
+      if (radius > BasicPlant.MAX_RADIUS) radius = BasicPlant.MAX_RADIUS
+    }
+  }
 
-  override def height: Double = Math.sqrt(size)
+  private def replicate(): Unit = {
+    if (isMaxRadius) {
+      if(isReplicationReady()){
+        val unitRandomVec = Angle(Random.nextDouble() * 2 * Math.PI).toVec
+        val spawnPoint: Vec = unitRandomVec * Random.between(3,BasicPlant.MAX_RADIUS * 2 + 10) + pos
+        val newPlant = new BasicPlant(1, entityRepository, spawnPoint, BasicPlant.MIN_RADIUS)
+        if (!entityRepository.twoDimensionals().exists(e => e.intersects(newPlant))) {
+          entityRepository.add(newPlant)
+        }
+        replication = 0
+      }
+      replication += 1
+    }
+  }
 
-  override def pos: Vec = movable.pos
+  def isMaxRadius: Boolean = radius >= BasicPlant.MAX_RADIUS
 
-
-  override def eat(chunk: Double): Boolean = {
-    if(size > chunk + MIN_SIZE) {
-      size = size - chunk
+  override def eat(chunk: Area): Boolean = {
+    if (canEat(chunk)) {
+      radius = Circle.radius(area() - chunk).value
       true
     } else {
       false
     }
   }
-
-  def isMaxSize = size >= MAX_SIZE
-
-  override def toString = s"BasicPlant($GROWTH_RATE, $size, $MAX_SIZE, $MIN_SIZE)"
 
   override def handleCollision(entity: Entity): Unit =
     entity match {
@@ -61,31 +61,27 @@ class BasicPlant(id: Int, startingPos: Vec, startingSize: Int) extends Entity(id
         val vectorPush = (e.pos - pos).normalize * 2
         e.addForce(Force("push", vectorPush))
       }
-      case e: BasicPlant => {
+/*      case e: BasicPlant => {
         var thisToOther = e.pos - pos
-        if(thisToOther.length == 0) {
+        if (thisToOther.length == 0) {
           thisToOther = Vec(Random.between(-0.1, 0.11), Random.between(-0.1, 0.11))
         }
         val vectorPush = thisToOther.normalize * 0.12
         e.addForce(Force("push", vectorPush))
-       }
+      }*/
       case _ =>
     }
 
-  def canEat(chunkSize: Int): Boolean = {
-    size - chunkSize > MIN_SIZE
+  def canEat(chunkSize: Area): Boolean = {
+    area() - chunkSize > BasicPlant.MIN_AREA()
   }
 
-  override def vel: Vec = movable.vel
+  override def pos: Vec = startingPos
+}
 
-  override def heading: Angle = movable.heading
+object BasicPlant {
+  val MAX_RADIUS: Int = 15
+  val MIN_RADIUS: Int = 5
 
-  override def mass: Double = movable.mass
-
-  override def addForce(f: Force): Unit = movable.addForce(f)
-
-  override def move(): Unit = movable.move()
-
-  override def maxVel: Double = movable.maxVel
-
+  private def MIN_AREA(): Area = Circle.area(MIN_RADIUS)
 }

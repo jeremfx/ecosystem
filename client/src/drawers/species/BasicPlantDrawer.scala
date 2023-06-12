@@ -7,12 +7,12 @@ import org.scalajs.dom.CanvasRenderingContext2D
 object BasicPlantDrawer extends EntityDrawer[BasicPlant] {
   override def draw(ctx: CanvasRenderingContext2D, entity: BasicPlant, remainingLag: Double): Unit = {
     ctx.beginPath()
-    val width = Math.round(entity.width)
-    ctx.arc(entity.pos.x, entity.pos.y, width/2, 0, 2*Math.PI)
-    if(entity.isMaxSize){
+    ctx.arc(entity.pos.x, entity.pos.y, entity.radius, 0, 2*Math.PI)
+    if(entity.isMaxRadius){
+      ctx.fillStyle = "#389319"
+    } else {
       ctx.fillStyle = "#41A534"
-    } else
-      ctx.fillStyle = "#62B452"
+    }
     ctx.fill()
   }
 

@@ -1,5 +1,5 @@
 package drawers
-import core.domain.game.{Bounds, Game}
+import core.domain.game.{Bounds, Game, PerlinNoise}
 import org.scalajs.dom.CanvasRenderingContext2D
 
 object SimpleGameDrawer extends CanvasGameDrawer {
@@ -8,6 +8,7 @@ object SimpleGameDrawer extends CanvasGameDrawer {
     ctx.clearRect(0, 0, game.bounds.width, game.bounds.height)
     drawBoundaries(game, ctx)
     game.entities.foreach(GenericEntityDrawer.draw(ctx,_, lag))
+
   }
 
   def drawBoundaries(game:Game, ctx: CanvasRenderingContext2D): Unit = {
@@ -22,5 +23,16 @@ object SimpleGameDrawer extends CanvasGameDrawer {
     ctx.stroke()
     ctx.closePath()
     ctx.restore()
+
+/*    val perlinNoise = PerlinNoise.generatePerlinNoise(game.bounds, 0.004)
+
+    for (i <- perlinNoise.indices) {
+      for (j <- perlinNoise(i).indices) {
+        val color = perlinNoise(i)(j) * 255
+        ctx.fillStyle = "rgb(" + color + ", " + color + ", " + color + ")"
+        ctx.fillRect(i, j, 1, 1)
+      }
+    }*/
+
   }
 }

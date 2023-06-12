@@ -21,7 +21,16 @@ object shared extends Module {
   trait SharedModule extends AppScalaModule with PlatformScalaModule {
   }
 
-  object jvm extends SharedModule
+  object jvm extends SharedModule {
+    object test extends ScalaTests {
+      def testFramework = "utest.runner.Framework"
+
+      override def ivyDeps = Agg(
+        ivy"com.lihaoyi::utest::0.7.10",
+        ivy"com.lihaoyi::requests::0.6.9",
+      )
+    }
+  }
 
   object js extends SharedModule with AppScalaJSModule
 }

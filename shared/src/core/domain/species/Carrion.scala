@@ -1,7 +1,7 @@
 package core.domain.species
 
 import core.domain.game.{Entity, EntityRepository}
-import core.domain.physics.{Collider, Force, Positionable, TwoDimensional, Vec}
+import core.domain.physics.{Area, Collider, Force, Positionable, TwoDimensional, Vec}
 
 class Carrion(id: Int, entityRepo: EntityRepository, startingPos: Vec, dimension: TwoDimensional) extends Entity(id) with TwoDimensional
   with Positionable with Edible with Collider {
@@ -26,8 +26,8 @@ class Carrion(id: Int, entityRepo: EntityRepository, startingPos: Vec, dimension
 
   override def pos: Vec = startingPos
 
-  override def eat(chunk: Double): Boolean = {
-    size = size - chunk
+  override def eat(chunk: Area): Boolean = {
+    size = size - chunk.value
     if(size <= 0) entityRepo.remove(this)
     true
   }

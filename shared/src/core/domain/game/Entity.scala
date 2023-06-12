@@ -1,5 +1,7 @@
 package core.domain.game
 
-trait Entity(id: Int) {
+import core.domain.physics.Positionable
+
+trait Entity(id: Int){
   def update(): Unit
 }
