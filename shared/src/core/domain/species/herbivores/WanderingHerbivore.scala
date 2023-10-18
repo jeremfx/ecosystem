@@ -84,8 +84,7 @@ class WanderingHerbivore(id: Int, entityRepo: EntityRepository, startingPos: Vec
       val desiredVec = desiredFood.pos - pos
       food = Some(desiredFood)
       //println(desiredVec.length + " , " + desiredFood.radius)
-      if (desiredVec.length < desiredFood.radi
-        us + width/2 + 2) {
+      if (desiredVec.length < desiredFood.radius + width/2 + 2) {
         if (desiredFood.eat(CHUNK_SIZE)) {
           hunger = 0
           food = None

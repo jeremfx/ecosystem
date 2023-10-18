@@ -4,7 +4,7 @@ case class Experience(state: (Double, Double), action: Int, reward: Double, next
 
 object DQN {
 
-  val actionSize = 8
+  /*val actionSize = 8
   val stateSize = 2
   val replayBuffer = mutable.Queue[Experience]()
   val bufferSize = 10000
@@ -87,5 +87,5 @@ object DQN {
         replay()
       }
     }
-  }
+  }*/
 }
