@@ -2,6 +2,7 @@ package core.domain.species
 
 import core.domain.game.{Entity, EntityRepository}
 import core.domain.physics.{Area, Collider, Force, Positionable, TwoDimensional, Vec}
+import core.domain.species.herbivores.WanderingHerbivore
 
 class Carrion(id: Int, entityRepo: EntityRepository, startingPos: Vec, dimension: TwoDimensional) extends Entity(id) with TwoDimensional
   with Positionable with Edible with Collider {
@@ -34,7 +35,7 @@ class Carrion(id: Int, entityRepo: EntityRepository, startingPos: Vec, dimension
 
   override def handleCollision(entity: Entity): Unit = {
     entity match {
-      case e: Herbivore => {
+      case e: WanderingHerbivore => {
         val vectorPush = (e.pos - pos).normalize * 2
         e.addForce(Force("push", vectorPush))
       }

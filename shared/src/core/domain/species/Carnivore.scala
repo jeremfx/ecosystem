@@ -2,6 +2,7 @@ package core.domain.species
 
 import core.domain.game.{Entity, EntityRepository}
 import core.domain.physics.{Angle, Collider, Force, Movable, SimpleMovable, Square, Vec}
+import core.domain.species.herbivores.WanderingHerbivore
 
 import scala.util.Random
 
@@ -24,7 +25,7 @@ class Carnivore(id: Int, entityRepo: EntityRepository, startingPos: Vec) extends
   val MAX_HUNGER = 400
   val DEATH_HUNGER = 1000
   def isHungry: Boolean = hunger > MAX_HUNGER
-  var food: Option[Herbivore] = None
+  var food: Option[WanderingHerbivore] = None
   override def update(): Unit = {
     wander()
     move()
@@ -47,7 +48,7 @@ class Carnivore(id: Int, entityRepo: EntityRepository, startingPos: Vec) extends
     //updateAge()
   }
 
-  def seekAndEatFood(desiredFood: Herbivore): Unit = {
+  def seekAndEatFood(desiredFood: WanderingHerbivore): Unit = {
     val desiredVec = desiredFood.pos - pos
     food = Some(desiredFood)
     if (desiredVec.length < desiredFood.width + width / 2 + 2) {
@@ -60,8 +61,8 @@ class Carnivore(id: Int, entityRepo: EntityRepository, startingPos: Vec) extends
       movable.addForce(Force("steer", steer))
     }
   }
-  private def closestFood(): Option[Herbivore] = {
-    val herbivores: Seq[Herbivore] = entityRepo.herbivores()
+  private def closestFood(): Option[WanderingHerbivore] = {
+    val herbivores: Seq[WanderingHerbivore] = entityRepo.herbivores()
     val candidates = herbivores.sortWith((a, b) => (a.pos - pos).length < (b.pos - pos).length)
     //println("Candidates " + candidates.toString())
     candidates.headOption
@@ -81,7 +82,7 @@ class Carnivore(id: Int, entityRepo: EntityRepository, startingPos: Vec) extends
 
   override def handleCollision(entity: Entity): Unit = {
     entity match {
-      case e: (Herbivore | Carnivore) =>
+      case e: (WanderingHerbivore | Carnivore) =>
         val vectorPush = (e.pos - pos).normalize * 2
         e.addForce(Force("push", vectorPush))
       case _ =>

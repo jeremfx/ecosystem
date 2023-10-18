@@ -1,6 +1,6 @@
 package events
 
-import org.scalajs.dom.raw.{KeyboardEvent, MouseEvent}
+import org.scalajs.dom.{KeyboardEvent, MouseEvent}
 
 import scala.collection.mutable.ListBuffer
 
@@ -39,4 +39,9 @@ object DomEventDispatcher extends DomEventHandler {
   override def onMouseUp(e: MouseEvent): Unit = {
     handlers.foreach(_.onMouseUp(e))
   }
+
+  def onDoubleClick(e: MouseEvent): Unit = {
+    handlers.foreach(_.onDoubleClick(e))
+  }
+
 }

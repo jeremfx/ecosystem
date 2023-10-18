@@ -1,6 +1,7 @@
 package drawers.species
 
-import core.domain.species.{Carnivore, Herbivore}
+import core.domain.species.Carnivore
+import core.domain.species.herbivores.WanderingHerbivore
 import drawers.EntityDrawer
 import org.scalajs.dom.CanvasRenderingContext2D
 

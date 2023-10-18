@@ -38,6 +38,9 @@ class BasicRunner(canvas: html.Canvas, game: Game, gameDrawer: CanvasGameDrawer)
     canvas.onkeyup = e => {
       DomEventDispatcher.onKeyUp(e)
     }
+    canvas.ondblclick = e => {
+      DomEventDispatcher.onDoubleClick(e)
+    }
   }
 
   def run(): Unit = {

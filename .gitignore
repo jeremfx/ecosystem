@@ -2,5 +2,6 @@ out/
 .idea_modules/
 .idea/
 .coursier/
+.bsp/
 stderr.log
 stdout.log

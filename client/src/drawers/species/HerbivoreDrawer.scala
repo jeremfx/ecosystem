@@ -1,11 +1,11 @@
 package drawers.species
 
-import core.domain.species.Herbivore
+import core.domain.species.herbivores.WanderingHerbivore
 import drawers.EntityDrawer
 import org.scalajs.dom.CanvasRenderingContext2D
 
-object HerbivoreDrawer extends EntityDrawer[Herbivore] {
-  override def draw(ctx: CanvasRenderingContext2D, entity: Herbivore, remainingLag: Double): Unit = {
+object HerbivoreDrawer extends EntityDrawer[WanderingHerbivore] {
+  override def draw(ctx: CanvasRenderingContext2D, entity: WanderingHerbivore, remainingLag: Double): Unit = {
     ctx.beginPath()
     ctx.rect(entity.pos.x - entity.width/2 , entity.pos.y - entity.width/2, entity.width, entity.height)
 /*    ctx.fillStyle = "#41A534"

@@ -13,12 +13,7 @@ class EcosystemController(ecosystem: Game, canvas: Canvas) extends DomEventHandl
   override def onMouseUp(e: MouseEvent): Unit = {}
 
   override def onClick(e: MouseEvent): Unit = {
-    val eventPos = getPositionInCanvas(e.clientX, e.clientY)
-    if(e.button == 0){
-      ecosystem.handle(CreateBasicPlant(eventPos))
-    } else if (e.button == 2) {
-      ecosystem.handle(RemoveBasicPlant(eventPos))
-    }
+    ecosystem.pause()
   }
 
   override def onKeyDown(e: KeyboardEvent): Unit = {}
@@ -34,5 +29,14 @@ class EcosystemController(ecosystem: Game, canvas: Canvas) extends DomEventHandl
   private def getPositionInCanvas(x: Double, y: Double): Vec = {
     val rect = canvas.getBoundingClientRect();
     Vec(x - rect.left, y - rect.top)
+  }
+
+  override def onDoubleClick(e: MouseEvent): Unit = {
+    val eventPos = getPositionInCanvas(e.clientX, e.clientY)
+    if (e.button == 0) {
+      ecosystem.handle(CreateBasicPlant(eventPos))
+    } else if (e.button == 2) {
+      ecosystem.handle(RemoveBasicPlant(eventPos))
+    }
   }
 }

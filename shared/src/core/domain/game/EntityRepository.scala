@@ -1,7 +1,9 @@
 package core.domain.game
 
 import core.domain.physics.TwoDimensional
-import core.domain.species.{BasicPlant, Carrion, Grass, Herbivore}
+import core.domain.species.herbivores.WanderingHerbivore
+import core.domain.species.plants.InvasivePlant
+import core.domain.species.{Carrion, Grass}
 
 
 trait EntityRepository {
@@ -11,8 +13,8 @@ trait EntityRepository {
   def exists(entity: Entity): Boolean
   def carrions(): Seq[Carrion]
   def grass(): Seq[Grass]
-  def plants(): Seq[BasicPlant]
+  def plants(): Seq[InvasivePlant]
   def twoDimensionals(): Seq[TwoDimensional]
-  def herbivores(): Seq[Herbivore]
+  def herbivores(): Seq[WanderingHerbivore]
 
 }
