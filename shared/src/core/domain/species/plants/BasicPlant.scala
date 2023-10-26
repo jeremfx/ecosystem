@@ -10,7 +10,5 @@ class BasicPlant(id: Int,  startingPos: Vec) extends Entity(id)
 
   override def eat(chunk: Area): Boolean = {true}
 
-  override def handleCollision(entity: Entity): Unit = {}
-
   override def pos: Vec = startingPos
 }

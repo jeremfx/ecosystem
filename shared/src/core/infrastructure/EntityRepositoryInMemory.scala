@@ -1,7 +1,7 @@
 package core.infrastructure
 
 import core.domain.game.{Entity, EntityRepository}
-import core.domain.physics.TwoDimensional
+import core.domain.physics.{Collider, TwoDimensional}
 import core.domain.species.herbivores.WanderingHerbivore
 import core.domain.species.plants.InvasivePlant
 import core.domain.species.{Carrion, Grass}
@@ -14,9 +14,10 @@ class EntityRepositoryInMemory extends EntityRepository{
   private val grassEntities = new mutable.ListBuffer[Grass]()
   private val plantEntities = new mutable.ListBuffer[InvasivePlant]()
   private val herbivoresEntities = new mutable.ListBuffer[WanderingHerbivore]()
-  private val twoDimensionalEntities = new mutable.ListBuffer[TwoDimensional]()
+  private val physicalMutableEntities = new mutable.ListBuffer[Entity with TwoDimensional with Collider]()
 
   override def add(entity: Entity): Unit = {
+    if(entity.pos)
     entity match {
       case carrion: Carrion => carrionsEntities += carrion
       case grass: Grass => grassEntities += grass
@@ -25,12 +26,13 @@ class EntityRepositoryInMemory extends EntityRepository{
       case _ =>
     }
     entity match {
-      case twoDimensional: TwoDimensional => twoDimensionalEntities += twoDimensional
+      case physicalEntity: Entity with TwoDimensional with Collider => physicalMutableEntities += physicalEntity
+      case _ =>
     }
     mutableEntities += entity
   }
 
-  override def entities(): Seq[Entity] = mutableEntities.toSeq
+  override def entities(): mutable.ListBuffer[Entity] = mutableEntities
 
   override def remove(entity: Entity): Unit = {
     entity match {
@@ -42,7 +44,8 @@ class EntityRepositoryInMemory extends EntityRepository{
     }
 
     entity match {
-      case twoDimensional: TwoDimensional => twoDimensionalEntities -= twoDimensional
+      case physicalEntity: Entity with TwoDimensional with Collider => physicalMutableEntities -= physicalEntity
+      case _ =>
     }
     
     mutableEntities -= entity
@@ -55,7 +58,6 @@ class EntityRepositoryInMemory extends EntityRepository{
   override def grass(): Seq[Grass] = grassEntities.toSeq
 
   override def plants(): Seq[InvasivePlant] = plantEntities.toSeq
-  override def twoDimensionals(): Seq[TwoDimensional] = twoDimensionalEntities.toSeq
+  override def physicalEntities(): Seq[Entity with TwoDimensional with Collider] = physicalMutableEntities.toSeq
   override def herbivores(): Seq[WanderingHerbivore] = herbivoresEntities.toSeq
-
 }

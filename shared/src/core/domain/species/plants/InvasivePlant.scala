@@ -23,7 +23,7 @@ class InvasivePlant(id: Int, entityRepository: EntityRepository, startingPos: Ve
   private def grow(): Unit = {
     if (radius < InvasivePlant.MAX_RADIUS) {
       radius += RADIUS_GROWTH_RATE
-      if(entityRepository.twoDimensionals().exists(twoD => !twoD.equals(this) && twoD.intersects(this))){
+      if(entityRepository.plants().exists(twoD => !twoD.equals(this) && twoD.intersects(this))){
         radius -= RADIUS_GROWTH_RATE
       }
       if (radius > InvasivePlant.MAX_RADIUS) radius = InvasivePlant.MAX_RADIUS
@@ -36,7 +36,7 @@ class InvasivePlant(id: Int, entityRepository: EntityRepository, startingPos: Ve
         val unitRandomVec = Angle(Random.nextDouble() * 2 * Math.PI).toVec
         val spawnPoint: Vec = unitRandomVec * Random.between(3,InvasivePlant.MAX_RADIUS * 2 + 10) + pos
         val newPlant = new InvasivePlant(1, entityRepository, spawnPoint, InvasivePlant.MIN_RADIUS)
-        if (!entityRepository.twoDimensionals().exists(e => e.intersects(newPlant))) {
+        if (!entityRepository.physicalEntities().exists(e => e.intersects(newPlant))) {
           entityRepository.add(newPlant)
         }
         replication = 0
@@ -55,23 +55,6 @@ class InvasivePlant(id: Int, entityRepository: EntityRepository, startingPos: Ve
       false
     }
   }
-
-  override def handleCollision(entity: Entity): Unit =
-    entity match {
-      case e: (WanderingHerbivore | Carnivore) => {
-        val vectorPush = (e.pos - pos).normalize * 2
-        e.addForce(Force("push", vectorPush))
-      }
-/*      case e: BasicPlant => {
-        var thisToOther = e.pos - pos
-        if (thisToOther.length == 0) {
-          thisToOther = Vec(Random.between(-0.1, 0.11), Random.between(-0.1, 0.11))
-        }
-        val vectorPush = thisToOther.normalize * 0.12
-        e.addForce(Force("push", vectorPush))
-      }*/
-      case _ =>
-    }
 
   def canEat(chunkSize: Area): Boolean = {
     area() - chunkSize > InvasivePlant.MIN_AREA()

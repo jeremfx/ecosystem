@@ -2,7 +2,7 @@ package core.domain.physics
 
 import scala.language.postfixOps
 
-trait Circle(var radius: Double) extends TwoDimensional with Positionable{
+trait Circle(var radius: Double) extends TwoDimensional {
   override def contains(point: Vec): Boolean = {
     (point - this.pos).length <= radius
   }

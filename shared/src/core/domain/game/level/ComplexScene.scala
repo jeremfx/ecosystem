@@ -14,8 +14,8 @@ object ComplexScene extends Scene{
     //createRandomGrass(perlinNoiseByPixel).foreach(entityRepo.add(_))
     createRandomPlants(perlinNoiseByPixel).foreach(entityRepo.add(_))
     //createRandomPlants(5).foreach(entityRepo.add(_))
-    createRandomHerbivores(10).foreach(entityRepo.add(_))
-    createRandomCarnivores(2).foreach(entityRepo.add(_))
+    createRandomHerbivores(80).foreach(entityRepo.add(_))
+    createRandomCarnivores(8).foreach(entityRepo.add(_))
     createRandomInsects(15).foreach(entityRepo.add(_))
     //createRandomCarrion(5).foreach(entityRepo.add(_))
 

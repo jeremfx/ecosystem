@@ -79,13 +79,4 @@ class Carnivore(id: Int, entityRepo: EntityRepository, startingPos: Vec) extends
 
     movable.addForce(Force("steer", steer))
   }
-
-  override def handleCollision(entity: Entity): Unit = {
-    entity match {
-      case e: (WanderingHerbivore | Carnivore) =>
-        val vectorPush = (e.pos - pos).normalize * 2
-        e.addForce(Force("push", vectorPush))
-      case _ =>
-    }
-  }
 }

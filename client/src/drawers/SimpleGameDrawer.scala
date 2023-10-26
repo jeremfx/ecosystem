@@ -13,7 +13,7 @@ object SimpleGameDrawer extends CanvasGameDrawer {
 
   def drawBoundaries(game:Game, ctx: CanvasRenderingContext2D): Unit = {
     ctx.save()
-    ctx.strokeStyle = "blue"
+    ctx.strokeStyle = "grey"
     ctx.beginPath()
     ctx.moveTo(0,0)
     ctx.lineTo(game.bounds.width, 0)

@@ -107,15 +107,6 @@ class WanderingHerbivore(id: Int, entityRepo: EntityRepository, startingPos: Vec
     }
   }
 
-  override def handleCollision(entity: Entity): Unit = {
-    entity match {
-      case e: (WanderingHerbivore | Carnivore) =>
-        val vectorPush = (e.pos - pos).normalize * 2
-        e.addForce(Force("push", vectorPush))
-      case _ =>
-    }
-  }
-
   def die(): Unit = {
     entityRepo.remove(this)
     entityRepo.add(new Carrion(1, entityRepo, pos, this))

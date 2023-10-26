@@ -5,7 +5,7 @@ import core.domain.physics.{Area, Collider, Force, Positionable, TwoDimensional,
 import core.domain.species.herbivores.WanderingHerbivore
 
 class Carrion(id: Int, entityRepo: EntityRepository, startingPos: Vec, dimension: TwoDimensional) extends Entity(id) with TwoDimensional
-  with Positionable with Edible with Collider {
+  with Positionable with Edible {
 
   var decayLevel: Double = 0
   val DECAY_THRESHOLD: Int = 10*3000
@@ -31,15 +31,5 @@ class Carrion(id: Int, entityRepo: EntityRepository, startingPos: Vec, dimension
     size = size - chunk.value
     if(size <= 0) entityRepo.remove(this)
     true
-  }
-
-  override def handleCollision(entity: Entity): Unit = {
-    entity match {
-      case e: WanderingHerbivore => {
-        val vectorPush = (e.pos - pos).normalize * 2
-        e.addForce(Force("push", vectorPush))
-      }
-      case _ =>
-    }
   }
 }

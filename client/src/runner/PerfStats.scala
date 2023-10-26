@@ -16,7 +16,7 @@ class PerfStats() {
 
   def drawStats(timestamp: Double, ctx: dom.CanvasRenderingContext2D): Unit = {
     ctx.font = "15px Courier";
-    ctx.fillStyle = "grey"
+    ctx.fillStyle = "red"
     ctx.fillText("FPS : " + String.valueOf(getFps(timestamp)), 10, 10)
     ctx.fillText("UPS : " + String.valueOf(getUps(timestamp)), 115, 10)
     ctx.fillText("Entities : " + String.valueOf(numberOfEntities), 220, 10);
